@@ -5,7 +5,6 @@ A fielded flat file parser
 ## Usage
 
 ```php
-
 $formats = (new Tummy\Config\Factory())->create([
     [
         'ident' => new Tummy\Record\Ident\Match('NEW'), // used for supporting multiple record formats in a single file
