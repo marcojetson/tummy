@@ -2,7 +2,7 @@
 
 namespace Tummy;
 
-class Record
+class Record implements \IteratorAggregate, \Countable
 {
     /** @var array */
     private $properties;
@@ -21,5 +21,21 @@ class Record
     public function __set($property, $value)
     {
         $this->properties[$property] = $value;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->properties);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function count()
+    {
+        return sizeof($this->properties);
     }
 }
