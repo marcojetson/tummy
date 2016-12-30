@@ -22,6 +22,12 @@ class DateTime implements Converter
      */
     public function convert($value)
     {
-        return \DateTime::createFromFormat($this->format, $value);
+        $dateTime = \DateTime::createFromFormat($this->format, $value);
+
+        if ($dateTime) {
+            return $dateTime;
+        }
+
+        throw new \RuntimeException(sprintf('Unable to convert "%s" to DateTime', $value));
     }
 }

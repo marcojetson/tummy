@@ -7,18 +7,22 @@ use Tummy\Record\Ident;
 class Length implements Ident
 {
     /** @var array */
-    protected $options = [
-        'length' => null,
-        'min' => null,
-        'max' => null,
-    ];
+    private $options;
 
     /**
      * @param array $options
      */
-    public function __construct(array $options = [])
+    public function __construct(array $options)
     {
-        $this->options = array_merge($options, $this->options);
+        if (!isset($options['length']) && !isset($options['min']) && !isset($options['max'])) {
+            throw new \InvalidArgumentException('You need to set at least one of length, min or max options');
+        }
+
+        if (isset($options['length']) && (isset($options['min']) || isset($options['max']))) {
+            throw new \InvalidArgumentException('You cannot set min/max options and length at the same time');
+        }
+
+        $this->options = $options;
     }
 
     /**

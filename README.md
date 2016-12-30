@@ -15,7 +15,7 @@ $formats = (new Tummy\Config\Factory())->create([
             ],
             [
                 'length' => 16,
-                'reference' => 'firstName',
+                'reference' => 'username',
             ],
             [
                 'length' => 3, // elements w/o reference will be ignored
@@ -29,6 +29,7 @@ $formats = (new Tummy\Config\Factory())->create([
     ],
     [
         'ident' => new Tummy\Record\Ident\Match('PWD'),
+        'recordClass' => \stdClass::class,
         'elements' => [
             [
                 'length' => 3,
@@ -58,6 +59,6 @@ $records = $parser->parse([
 ]);
 
 foreach ($records as $record) {
-    echo $record->type, ' by ', $record->username, PHP_EOL;
+    echo '(', get_class($record), ') ', $record->type, ' by ', $record->username, PHP_EOL;
 }
 ```

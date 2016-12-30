@@ -7,21 +7,19 @@ use Tummy\Record\Ident;
 class Match implements Ident
 {
     /** @var string */
-    protected $string;
+    private $string;
 
-    /** @var array $options */
-    protected $options = [
-        'start' => 0,
-    ];
+    /** @var int $options */
+    private $start = 0;
 
     /**
      * @param string $string
-     * @param array $options
+     * @param int $start
      */
-    public function __construct($string, array $options = [])
+    public function __construct($string, $start = 0)
     {
         $this->string = $string;
-        $this->options = array_merge($options, $this->options);
+        $this->start = $start;
     }
 
     /**
@@ -29,6 +27,6 @@ class Match implements Ident
      */
     public function test($line)
     {
-        return $this->string === substr($line, $this->options['start'], strlen($this->string));
+        return $this->string === substr($line, $this->start, strlen($this->string));
     }
 }
