@@ -2,6 +2,7 @@
 
 A fielded flat file parser
 
+[![Build Status](https://travis-ci.org/marcojetson/tummy.svg?branch=master)](https://travis-ci.org/marcojetson/tummy)
 [![Code Climate](https://codeclimate.com/github/marcojetson/tummy/badges/gpa.svg)](https://codeclimate.com/github/marcojetson/tummy)
 [![Test Coverage](https://codeclimate.com/github/marcojetson/tummy/badges/coverage.svg)](https://codeclimate.com/github/marcojetson/tummy/coverage)
 
