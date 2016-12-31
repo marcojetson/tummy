@@ -2,8 +2,6 @@
 
 namespace Tummy\Config;
 
-use Tummy\Record;
-
 class Factory
 {
     /**
@@ -17,7 +15,7 @@ class Factory
         foreach ($definitions as $definition) {
             $format = new Format();
 
-            $format->setRecordClass(isset($definition['recordClass']) ? $definition['recordClass'] : Record::class);
+            $format->setRecordClass(isset($definition['recordClass']) ? $definition['recordClass'] : \stdClass::class);
 
             if (isset($definition['ident'])) {
                 $format->setIdent($definition['ident']);

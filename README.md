@@ -33,7 +33,7 @@ $formats = (new Tummy\Config\Factory())->create([
     ],
     [
         'ident' => new Tummy\Record\Ident\Match('PWD'),
-        'recordClass' => \stdClass::class,
+        'recordClass' => PwdRecord::class, // will use \stdClass by default
         'elements' => [
             [
                 'length' => 3,
