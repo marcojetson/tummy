@@ -30,6 +30,8 @@ class Parser
                 continue;
             }
 
+            $recordMapper = $format->getRecordMapper();
+
             $recordClass = $format->getRecordClass();
             $record = new $recordClass();
 
@@ -48,7 +50,7 @@ class Parser
 
                 $reference = $element->getReference();
                 if ($reference !== null) {
-                    $record->$reference = $value;
+                    $recordMapper->map($record, $reference, $value);
                 }                
             }
 

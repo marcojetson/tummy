@@ -2,12 +2,15 @@
 
 namespace Tummy\Config;
 
-use Tummy\Record\Ident;
+use Tummy\Record;
 
 class Format
 {
-    /** @var Ident */
+    /** @var Record\Ident */
     private $ident;
+
+    /** @var Record\Mapper */
+    private $recordMapper;
 
     /** @var string */
     private $recordClass;
@@ -16,7 +19,7 @@ class Format
     private $elements;
 
     /**
-     * @return Ident
+     * @return Record\Ident
      */
     public function getIdent()
     {
@@ -24,11 +27,27 @@ class Format
     }
 
     /**
-     * @param Ident $ident
+     * @param Record\Ident $ident
      */
-    public function setIdent(Ident $ident)
+    public function setIdent(Record\Ident $ident)
     {
         $this->ident = $ident;
+    }
+
+    /**
+     * @return Record\Mapper
+     */
+    public function getRecordMapper()
+    {
+        return $this->recordMapper;
+    }
+
+    /**
+     * @param Record\Mapper $recordMapper
+     */
+    public function setRecordMapper(Record\Mapper $recordMapper)
+    {
+        $this->recordMapper = $recordMapper;
     }
 
     /**

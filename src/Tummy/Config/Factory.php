@@ -2,6 +2,8 @@
 
 namespace Tummy\Config;
 
+use Tummy\Record\Mapper\Property;
+
 class Factory
 {
     /**
@@ -15,11 +17,12 @@ class Factory
         foreach ($definitions as $definition) {
             $format = new Format();
 
-            $format->setRecordClass(isset($definition['recordClass']) ? $definition['recordClass'] : \stdClass::class);
-
             if (isset($definition['ident'])) {
                 $format->setIdent($definition['ident']);
             }
+
+            $format->setRecordMapper(isset($definition['recordMapper']) ? $definition['recordMapper'] : new Property());
+            $format->setRecordClass(isset($definition['recordClass']) ? $definition['recordClass'] : \stdClass::class);
 
             foreach ($definition['elements'] as $options) {
                 $element = new Element();
