@@ -26,7 +26,7 @@ class BooleanTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider convertFailProvider
-     * @expectedException \RuntimeException
+     * @expectedException Tummy\Exception\ConverterException
      */
     public function testConvertFail(array $args, $string)
     {

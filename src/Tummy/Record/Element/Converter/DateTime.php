@@ -2,6 +2,7 @@
 
 namespace Tummy\Record\Element\Converter;
 
+use Tummy\Exception\ConverterException;
 use Tummy\Record\Element\Converter;
 
 class DateTime implements Converter
@@ -28,6 +29,6 @@ class DateTime implements Converter
             return $dateTime;
         }
 
-        throw new \RuntimeException(sprintf('Unable to convert "%s" to DateTime', $value));
+        throw new ConverterException(sprintf('Unable to convert "%s" to DateTime', $value));
     }
 }

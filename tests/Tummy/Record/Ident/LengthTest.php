@@ -7,7 +7,7 @@ use Tummy\Record\Ident;
 class LengthTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
     public function testCreateWithoutOptions()
     {
@@ -15,7 +15,7 @@ class LengthTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
     public function testCreateIncompatibleOptions()
     {

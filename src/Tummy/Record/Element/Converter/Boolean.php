@@ -2,6 +2,7 @@
 
 namespace Tummy\Record\Element\Converter;
 
+use Tummy\Exception\ConverterException;
 use Tummy\Record\Element\Converter;
 
 class Boolean implements Converter
@@ -35,6 +36,6 @@ class Boolean implements Converter
             return false;
         }
 
-        throw new \RuntimeException(sprintf('Unable to convert "%s" to boolean', $value));
+        throw new ConverterException(sprintf('Unable to convert "%s" to boolean', $value));
     }
 }

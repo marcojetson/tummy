@@ -14,7 +14,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider convertFailProvider
-     * @expectedException \RuntimeException
+     * @expectedException Tummy\Exception\ConverterException
      */
     public function testConvertFail($format, $string)
     {
