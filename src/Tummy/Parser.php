@@ -8,7 +8,7 @@ class Parser
     protected $formats;
 
     /**
-     * @param Format[] $formats
+     * @param Config\Format[] $formats
      */
     public function __construct(array $formats)
     {
@@ -21,48 +21,37 @@ class Parser
      */
     public function parse(array $lines)
     {
-        $records = [];
-
-        foreach ($lines as $line) {
-            $format = $this->ident($line);
-            
-            if (!$format) {
-                continue;
-            }
-
-            $recordMapper = $format->getRecordMapper();
-
-            $recordClass = $format->getRecordClass();
-            $record = new $recordClass();
-
-            $position = 0;
-
-            foreach ($format->getElements() as $element) {
-                $length = $element->getLength();
-                $value = trim(substr($line, $position, $length), $element->getPaddingChar());
-
-                $position += $length;
-
-                $converter = $element->getConverter();
-                if ($converter !== null) {
-                    $value = $converter->convert($value);
-                }
-
-                $reference = $element->getReference();
-                if ($reference !== null) {
-                    $recordMapper->map($record, $reference, $value);
-                }                
-            }
-
-            $records[] = $record;
-        }
-
-        return $records;
+        return array_map([$this, 'parseLine'], $lines);
     }
 
     /**
      * @param string $line
-     * @return Format|null
+     * @return object
+     */
+    public function parseLine($line)
+    {
+        $format = $this->ident($line);
+
+        $recordMapper = $format->getRecordMapper();
+        $record = $this->createRecord($format);
+
+        $position = 0;
+        foreach ($format->getElements() as $element) {
+            $value = $this->extractValue($line, $element, $position);
+
+            $reference = $element->getReference();
+            if ($reference !== null) {
+                $recordMapper->set($record, $reference, $value);
+            }
+        }
+
+        return $record;
+    }
+
+    /**
+     * @param string $line
+     * @return Config\Format
+     * @throws Exception\IdentException
      */
     protected function ident($line)
     {
@@ -72,5 +61,40 @@ class Parser
                 return $format;
             }
         }
+
+        throw new Exception\IdentException(sprintf('Unable to identify record format for "%s"', $line));
+    }
+
+    /**
+     * @param Config\Format $format
+     * @return object
+     */
+    protected function createRecord(Config\Format $format)
+    {
+        $recordClass = $format->getRecordClass();
+        return new $recordClass();
+    }
+
+    /**
+     * @param string $line
+     * @param Config\Element $element
+     * @param int &$position
+     * @return mixed
+     */
+    protected function extractValue($line, Config\Element $element, &$position = 0)
+    {
+        $length = $element->getLength();
+
+        $value = substr($line, $position, $length);
+        $value = trim($value, $element->getPaddingChar());
+
+        $position += $length;
+
+        $converter = $element->getConverter();
+        if ($converter !== null) {
+            $value = $converter->deserialize($value);
+        }
+
+        return $value;
     }
 }

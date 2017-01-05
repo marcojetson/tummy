@@ -13,16 +13,47 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider convertFailProvider
-     * @expectedException Tummy\Exception\ConverterException
+     * @expectedException \Tummy\Exception\ConverterException
      */
-    public function testConvertFail($format, $string)
+    public function testSerializeFail()
     {
-        $converter = new DateTime($format);
-        $converter->convert($string);
+        $converter = new DateTime('c');
+        $converter->serialize('uh oh');
     }
 
-    public function convertFailProvider()
+    /**
+     * @param string $format
+     * @param \DateTimeInterface $value
+     * @dataProvider serializeProvider
+     */
+    public function testSerialize($format, $value)
+    {
+        $converter = new DateTime($format);
+        $convertedValue = $converter->serialize($value);
+        $this->assertEquals($value->format($format), $convertedValue);
+    }
+
+    public function serializeProvider()
+    {
+        return [
+            ['Y-m-d', new \DateTime()],
+            ['Ymd', new \DateTime()],
+        ];
+    }
+
+    /**
+     * @param string $format
+     * @param string $value
+     * @dataProvider deserializeFailProvider
+     * @expectedException \Tummy\Exception\ConverterException
+     */
+    public function testDeserializeFail($format, $value)
+    {
+        $converter = new DateTime($format);
+        $converter->deserialize($value);
+    }
+
+    public function deserializeFailProvider()
     {
         return [
             ['Y-m-d', '20161231'],
@@ -32,16 +63,19 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider convertProvider
+     * @param string $format
+     * @param string $value
+     * @dataProvider deserializeProvider
      */
-    public function testConvert($format, $string)
+    public function testDeserialize($format, $value)
     {
         $converter = new DateTime($format);
-        $value = $converter->convert($string);
-        $this->assertEquals($string, $value->format($format));
+        $convertedValue = $converter->deserialize($value);
+        $this->assertInstanceOf(\DateTimeInterface::class, $convertedValue);
+        $this->assertEquals($value, $convertedValue->format($format));
     }
 
-    public function convertProvider()
+    public function deserializeProvider()
     {
         return [
             ['Y-m-d', '2016-12-31'],

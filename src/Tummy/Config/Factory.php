@@ -7,14 +7,14 @@ use Tummy\Record\Mapper\Property;
 class Factory
 {
     /**
-     * @param array $definition
+     * @param array $definitions
      * @return Format[]
      */
     public function create(array $definitions)
     {
         $formats = [];
 
-        foreach ($definitions as $definition) {
+        foreach ($definitions as $id => $definition) {
             $format = new Format();
 
             if (isset($definition['ident'])) {
@@ -41,7 +41,7 @@ class Factory
                 $format->addElement($element);
             }
 
-            $formats[] = $format;
+            $formats[$id] = $format;
         }
 
         return $formats;

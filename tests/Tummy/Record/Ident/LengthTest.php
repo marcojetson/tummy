@@ -7,22 +7,23 @@ use Tummy\Record\Ident;
 class LengthTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testCreateWithoutOptions()
     {
-        $ident = new Length([]);
+        new Length([]);
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testCreateIncompatibleOptions()
     {
-        $ident = new Length(['length' => 64, 'min' => 0]);
+        new Length(['length' => 64, 'min' => 0]);
     }
 
     /**
+     * @param array $options
      * @dataProvider createProvider
      */
     public function testCreate(array $options)
@@ -42,6 +43,8 @@ class LengthTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array $options
+     * @param string $string
      * @dataProvider identFailProvider
      */
     public function testIdentFail(array $options, $string)
@@ -61,6 +64,8 @@ class LengthTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array $options
+     * @param string $string
      * @dataProvider identProvider
      */
     public function testIdent(array $options, $string)

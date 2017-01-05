@@ -19,6 +19,8 @@ class MatchTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array $args
+     * @param string $string
      * @dataProvider identFailProvider
      */
     public function testIdentFail(array $args, $string)
@@ -36,6 +38,8 @@ class MatchTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array $args
+     * @param string $string
      * @dataProvider identProvider
      */
     public function testIdent(array $args, $string)

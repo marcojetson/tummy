@@ -7,6 +7,7 @@ use Tummy\Record\Element\Converter;
 class BooleanTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @param array $args
      * @dataProvider createProvider
      */
     public function testCreate(array $args)
@@ -25,16 +26,41 @@ class BooleanTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider convertFailProvider
-     * @expectedException Tummy\Exception\ConverterException
+     * @param array $args
+     * @param bool $value
+     * @param string $expected
+     * @dataProvider serializeProvider
      */
-    public function testConvertFail(array $args, $string)
+    public function testSerialize(array $args, $value, $expected)
     {
         $converter = new Boolean(...$args);
-        $converter->convert($string);
+        $convertedValue = $converter->serialize($value);
+        $this->assertEquals($expected, $convertedValue);
     }
 
-    public function convertFailProvider()
+    public function serializeProvider()
+    {
+        return [
+            [[], true, '1'],
+            [['Y', 'N'], false, 'N'],
+            [['YES'], true, 'YES'],
+            [['YES'], false, '0'],
+        ];
+    }
+
+    /**
+     * @param array $args
+     * @param string $string
+     * @dataProvider deserializeFailProvider
+     * @expectedException \Tummy\Exception\ConverterException
+     */
+    public function testDeserializeFail(array $args, $string)
+    {
+        $converter = new Boolean(...$args);
+        $converter->deserialize($string);
+    }
+
+    public function deserializeFailProvider()
     {
         return [
             [[], 'y'],
@@ -44,16 +70,19 @@ class BooleanTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider convertProvider
+     * @param array $args
+     * @param string $value
+     * @param bool $expected
+     * @dataProvider deserializeProvider
      */
-    public function testConvert(array $args, $string, $expected)
+    public function testDeserialize(array $args, $value, $expected)
     {
         $converter = new Boolean(...$args);
-        $value = $converter->convert($string);
-        $this->assertEquals($expected, $value);
+        $convertedValue = $converter->deserialize($value);
+        $this->assertEquals($expected, $convertedValue);
     }
 
-    public function convertProvider()
+    public function deserializeProvider()
     {
         return [
             [[], '1', true],

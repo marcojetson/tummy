@@ -21,7 +21,19 @@ class DateTime implements Converter
     /**
      * @inheritdoc
      */
-    public function convert($value)
+    public function serialize($value)
+    {
+        if (!$value instanceof \DateTimeInterface) {
+            throw new ConverterException();
+        }
+
+        return $value->format($this->format);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function deserialize($value)
     {
         $dateTime = \DateTime::createFromFormat($this->format, $value);
 
@@ -29,6 +41,6 @@ class DateTime implements Converter
             return $dateTime;
         }
 
-        throw new ConverterException(sprintf('Unable to convert "%s" to DateTime', $value));
+        throw new ConverterException();
     }
 }

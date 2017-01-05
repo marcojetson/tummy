@@ -12,7 +12,17 @@ class SetterTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Mapper::class, $mapper);
     }
 
-    public function testMap()
+    public function testGet()
+    {
+        $mapper = new Setter();
+        $record = $this->getMock(\stdClass::class, ['getAge']);
+
+        $record->expects($this->once())->method('getAge');
+
+        $mapper->get($record, 'age');
+    }
+
+    public function testSet()
     {
         $mapper = new Setter();
         $record = $this->getMock(\stdClass::class, ['setAge']);
@@ -21,6 +31,6 @@ class SetterTest extends \PHPUnit_Framework_TestCase
 
         $record->expects($this->once())->method('setAge')->with($value);
 
-        $mapper->map($record, 'age', $value);
+        $mapper->set($record, 'age', $value);
     }
 }

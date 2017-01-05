@@ -12,7 +12,7 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Mapper::class, $mapper);
     }
 
-    public function testMap()
+    public function testGet()
     {
         $mapper = new Property();
         $record = new \stdClass();
@@ -20,7 +20,20 @@ class PropertyTest extends \PHPUnit_Framework_TestCase
         $reference = 'age';
         $value = 31;
 
-        $mapper->map($record, $reference, $value);
+        $record->$reference = $value;
+
+        $this->assertEquals($value, $mapper->get($record, $reference));
+    }
+
+    public function testSet()
+    {
+        $mapper = new Property();
+        $record = new \stdClass();
+
+        $reference = 'age';
+        $value = 31;
+
+        $mapper->set($record, $reference, $value);
         $this->assertEquals($value, $record->$reference);
     }
 }

@@ -9,7 +9,15 @@ class Property implements Mapper
     /**
      * @inheritdoc
      */
-    public function map($record, $reference, $value)
+    public function get($record, $reference)
+    {
+        return $record->$reference;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function set($record, $reference, $value)
     {
         $record->$reference = $value;
     }

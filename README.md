@@ -10,7 +10,7 @@ A fielded flat file parser
 
 ```php
 $formats = (new Tummy\Config\Factory())->create([
-    [
+    'format1' => [
         'ident' => new Tummy\Record\Ident\Match('NEW'), // used for supporting multiple record formats in a single file
         'elements' => [
             [
@@ -31,7 +31,7 @@ $formats = (new Tummy\Config\Factory())->create([
             ],
         ],
     ],
-    [
+    'format2' => [
         'ident' => new Tummy\Record\Ident\Match('PWD'),
         'recordClass' => PwdRecord::class, // will use \stdClass by default
         'elements' => [
@@ -63,6 +63,9 @@ $records = $parser->parse([
 ]);
 
 foreach ($records as $record) {
-    echo '(', get_class($record), ') ', $record->type, ' by ', $record->username, PHP_EOL;
+    var_dump($record);
 }
+
+$composer = new Tummy\Composer($formats['format1']);
+echo $composer->compose([$records[0]])[0], PHP_EOL;
 ```

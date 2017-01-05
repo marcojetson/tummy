@@ -26,7 +26,15 @@ class Boolean implements Converter
     /**
      * @inheritdoc
      */
-    public function convert($value)
+    public function serialize($value)
+    {
+        return $value ? $this->true : $this->false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function deserialize($value)
     {
         if ($value === $this->true) {
             return true;
