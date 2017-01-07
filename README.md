@@ -63,8 +63,8 @@ $formats = (new Tummy\Config\Factory())->create([
 $parser = new Tummy\Parser($formats);
 
 $records = $parser->parse([
-    'NEWmarcojetson     31121985',
-    'PWDmarcojetson     peterete        ',
+    'NEW marcojetson     31121985',
+    'PWD marcojetson     peterete        ',
 ]);
 
 var_dump($records);
@@ -75,11 +75,11 @@ var_dump($records);
 //     ["type"]=>
 //     string(3) "NEW"
 //     ["username"]=>
-//     string(16) "arcojetson     3"
+//     string(11) "marcojetson"
 //     ["birthday"]=>
 //     object(DateTime)#19 (3) {
 //       ["date"]=>
-//       string(26) "0986-09-11 23:11:01.000000"
+//       string(26) "1985-12-31 23:20:54.000000"
 //       ["timezone_type"]=>
 //       int(3)
 //       ["timezone"]=>
@@ -91,9 +91,9 @@ var_dump($records);
 //     ["type"]=>
 //     string(3) "PWD"
 //     ["username"]=>
-//     string(16) "arcojetson     p"
+//     string(11) "marcojetson"
 //     ["password"]=>
-//     string(7) "eterete"
+//     string(8) "peterete"
 //   }
 // }
 ```
