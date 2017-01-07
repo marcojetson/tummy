@@ -24,6 +24,8 @@ class Factory
             $format->setRecordMapper(isset($definition['recordMapper']) ? $definition['recordMapper'] : new Property());
             $format->setRecordClass(isset($definition['recordClass']) ? $definition['recordClass'] : \stdClass::class);
 
+            $elements = [];
+
             foreach ($definition['elements'] as $options) {
                 $element = new Element();
                 
@@ -38,8 +40,10 @@ class Factory
                     $element->setConverter($options['converter']);
                 }
 
-                $format->addElement($element);
+                $elements[] = $element;
             }
+
+            $format->setElements($elements);
 
             $formats[$id] = $format;
         }

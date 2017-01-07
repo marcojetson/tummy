@@ -8,6 +8,8 @@ A fielded flat file parser
 
 ## Usage
 
+### Configuration
+
 ```php
 $formats = (new Tummy\Config\Factory())->create([
     'format1' => [
@@ -18,11 +20,11 @@ $formats = (new Tummy\Config\Factory())->create([
                 'reference' => 'type',
             ],
             [
-                'length' => 16,
-                'reference' => 'username',
+                'length' => 1, // elements w/o reference will be ignored
             ],
             [
-                'length' => 3, // elements w/o reference will be ignored
+                'length' => 16,
+                'reference' => 'username',
             ],
             [
                 'length' => 8,
@@ -33,11 +35,14 @@ $formats = (new Tummy\Config\Factory())->create([
     ],
     'format2' => [
         'ident' => new Tummy\Record\Ident\Match('PWD'),
-        'recordClass' => PwdRecord::class, // will use \stdClass by default
+        'recordClass' => PwdRecord::class, // will use \stdClass if not specified
         'elements' => [
             [
                 'length' => 3,
                 'reference' => 'type',
+            ],
+            [
+                'length' => 1,
             ],
             [
                 'length' => 16,
@@ -45,27 +50,64 @@ $formats = (new Tummy\Config\Factory())->create([
             ],
             [
                 'length' => 16,
-                'reference' => 'oldPassword',
-            ],
-            [
-                'length' => 16,
-                'reference' => 'newPassword',
+                'reference' => 'password',
             ],
         ],
     ],
 ]);
+```
 
+### Parse
+
+```php
 $parser = new Tummy\Parser($formats);
 
 $records = $parser->parse([
-    'NEWmarcojetson     31 29081985',
-    'PWDmarcojetson     peterete        poporombo       ',
+    'NEWmarcojetson     31121985',
+    'PWDmarcojetson     peterete        ',
 ]);
 
-foreach ($records as $record) {
-    var_dump($record);
-}
+var_dump($records);
+
+// array(2) {
+//   [0]=>
+//   object(stdClass)#18 (3) {
+//     ["type"]=>
+//     string(3) "NEW"
+//     ["username"]=>
+//     string(16) "arcojetson     3"
+//     ["birthday"]=>
+//     object(DateTime)#19 (3) {
+//       ["date"]=>
+//       string(26) "0986-09-11 23:11:01.000000"
+//       ["timezone_type"]=>
+//       int(3)
+//       ["timezone"]=>
+//       string(13) "Europe/Berlin"
+//     }
+//   }
+//   [1]=>
+//   object(PwdRecord)#20 (3) {
+//     ["type"]=>
+//     string(3) "PWD"
+//     ["username"]=>
+//     string(16) "arcojetson     p"
+//     ["password"]=>
+//     string(7) "eterete"
+//   }
+// }
+```
+
+### Compose
+
+```php
+$record = new \stdClass();
+$record->type = 'NEW';
+$record->username = 'marcojetson';
+$record->birthday = new \DateTime('1985-12-31');
 
 $composer = new Tummy\Composer($formats['format1']);
-echo $composer->compose([$records[0]])[0], PHP_EOL;
+echo $composer->compose([$record])[0];
+
+// "NEW marcojetson     31121985"
 ```

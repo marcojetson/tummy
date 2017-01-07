@@ -81,12 +81,4 @@ class Format
     {
         $this->elements = $elements;
     }
-
-    /**
-     * @param Element $element
-     */
-    public function addElement(Element $element)
-    {
-        $this->elements[] = $element;
-    }
 }
