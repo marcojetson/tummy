@@ -35,11 +35,7 @@ class Composer
 
         foreach ($this->format->getElements() as $element) {
             $reference = $element->getReference();
-            if ($reference === null) {
-                continue;
-            }
-
-            $value = $recordMapper->get($record, $reference);
+            $value = $reference === null ? '' : $recordMapper->get($record, $reference);
 
             $converter = $element->getConverter();
             if ($converter !== null) {
