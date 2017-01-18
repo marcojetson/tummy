@@ -42,9 +42,19 @@ class Composer
                 $value = $converter->serialize($value);
             }
 
-            $line .= str_pad($value, $element->getLength(), $element->getPaddingChar());
+            $line .= $this->pad($value, $element);
         }
 
         return $line;
+    }
+
+    /**
+     * @param string $value
+     * @param Config\Element $element
+     * @return string
+     */
+    protected function pad($value, Config\Element $element)
+    {
+        return str_pad($value, $element->getLength(), $element->getPaddingChar(), $element->getPaddingDirection());
     }
 }

@@ -15,6 +15,9 @@ class Element
     /** @var string */
     private $paddingChar;
 
+    /** @var int */
+    private $paddingDirection;
+
     /** @var Converter */
     private $converter;
 
@@ -64,6 +67,22 @@ class Element
     public function setPaddingChar($paddingChar)
     {
         $this->paddingChar = $paddingChar;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaddingDirection()
+    {
+        return $this->paddingDirection;
+    }
+
+    /**
+     * @param int $paddingDirection
+     */
+    public function setPaddingDirection($paddingDirection)
+    {
+        $this->paddingDirection = $paddingDirection;
     }
 
     /**

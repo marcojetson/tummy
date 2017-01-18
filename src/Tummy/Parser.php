@@ -84,9 +84,9 @@ class Parser
     protected function extractValue($line, Config\Element $element, &$position = 0)
     {
         $length = $element->getLength();
-
+        
         $value = substr($line, $position, $length);
-        $value = trim($value, $element->getPaddingChar());
+        $value = $this->trim($value, $element);
 
         $position += $length;
 
@@ -96,5 +96,21 @@ class Parser
         }
 
         return $value;
+    }
+
+    /**
+     * @param string $value
+     * @param Config\Element $element
+     * @return string
+     */
+    protected function trim($value, Config\Element $element)
+    {
+        $method = [
+            \STR_PAD_LEFT => 'ltrim',
+            \STR_PAD_RIGHT => 'rtrim',
+            \STR_PAD_BOTH => 'trim',
+        ][$element->getPaddingDirection()];
+
+        return $method($value, $element->getPaddingChar());
     }
 }

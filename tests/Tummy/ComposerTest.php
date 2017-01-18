@@ -125,6 +125,44 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('NEW abcd----', $lines[0]);
     }
 
+    public function testComposePaddingDirection()
+    {
+        $formats = (new Config\Factory())->create([
+            [
+                'elements' => [
+                    [
+                        'length' => 4,
+                        'reference' => 'type',
+                    ],
+                    [
+                        'length' => 8,
+                        'reference' => 'username',
+                        'paddingChar' => '-',
+                        'paddingDirection' => \STR_PAD_LEFT,
+                    ],
+                    [
+                        'length' => 4,
+                        'reference' => 'age',
+                        'paddingChar' => 'X',
+                        'paddingDirection' => \STR_PAD_BOTH,
+                    ],
+                ],
+            ],
+        ]);
+
+        $record = new \stdClass();
+        $record->type = 'NEW ';
+        $record->username = 'abcd';
+        $record->age = 31;
+
+        $composer = new Composer($formats[0]);
+        $lines = $composer->compose([$record]);
+
+        $this->assertCount(1, $lines);
+        $this->assertInternalType('string', $lines[0]);
+        $this->assertEquals('NEW ----abcdX31X', $lines[0]);
+    }
+
     public function testComposeConverter()
     {
         $converter = $this->getMock(Record\Element\Converter::class);

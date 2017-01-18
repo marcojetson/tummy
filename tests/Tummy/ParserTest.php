@@ -68,7 +68,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser($formats);
         $records = $parser->parse([
             'NEW marco-',
-            'PWD marco-   ***',
+            'PWD marco-  ***',
         ]);
 
         $this->assertCount(2, $records);
@@ -181,6 +181,47 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $records);
         $this->assertInstanceOf(\stdClass::class, $records[0]);
         $this->assertEquals('ABCD', $records[0]->username);
+    }
+
+    public function testParsePaddingDirection()
+    {
+        $formats = (new Config\Factory())->create([
+            [
+                'elements' => [
+                    [
+                        'length' => 4,
+                    ],
+                    [
+                        'length' => 8,
+                        'reference' => 'username',
+                        'paddingChar' => '-',
+                        'paddingDirection' => \STR_PAD_LEFT,
+                    ],
+                    [
+                        'length' => 4,
+                        'reference' => 'age',
+                        'paddingChar' => 'X',
+                        'paddingDirection' => \STR_PAD_BOTH,
+                    ],
+                ],
+            ],
+        ]);
+
+        $parser = new Parser($formats);
+        $records = $parser->parse([
+            'NEW ----ABCDX31X',
+            'NEW ABCD----31XX',
+        ]);
+
+        $this->assertCount(2, $records);
+        
+        $this->assertInstanceOf(\stdClass::class, $records[0]);
+        $this->assertEquals('ABCD', $records[0]->username);
+        $this->assertEquals('31', $records[0]->age);
+
+        $this->assertInstanceOf(\stdClass::class, $records[1]);
+        $this->assertEquals('ABCD----', $records[1]->username);
+        $this->assertEquals('31', $records[1]->age);
     }
 
     public function testParseConverter()

@@ -25,6 +25,8 @@ $formats = (new Tummy\Config\Factory())->create([
             [
                 'length' => 16,
                 'reference' => 'username',
+                'paddingChar' => '-',
+                'paddingDirection' => \STR_PAD_LEFT,
             ],
             [
                 'length' => 8,
@@ -63,7 +65,7 @@ $formats = (new Tummy\Config\Factory())->create([
 $parser = new Tummy\Parser($formats);
 
 $records = $parser->parse([
-    'NEW marcojetson     31121985',
+    'NEW -----marcojetson31121985',
     'PWD marcojetson     peterete        ',
 ]);
 
@@ -109,5 +111,5 @@ $record->birthday = new \DateTime('1985-12-31');
 $composer = new Tummy\Composer($formats['format1']);
 echo $composer->compose([$record])[0];
 
-// "NEW marcojetson     31121985"
+// "NEW -----marcojetson31121985"
 ```
