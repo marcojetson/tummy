@@ -85,7 +85,7 @@ class Parser
     {
         $length = $element->getLength();
         
-        $value = substr($line, $position, $length);
+        $value = mb_substr($line, $position, $length);
         $value = $this->trim($value, $element);
 
         $position += $length;

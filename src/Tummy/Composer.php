@@ -55,6 +55,9 @@ class Composer
      */
     protected function pad($value, Config\Element $element)
     {
-        return str_pad($value, $element->getLength(), $element->getPaddingChar(), $element->getPaddingDirection());
+        $value = mb_substr($value, 0, $element->getLength());
+        $length = strlen($value) - mb_strlen($value) + $element->getLength();
+
+        return str_pad($value, $length, $element->getPaddingChar(), $element->getPaddingDirection());
     }
 }

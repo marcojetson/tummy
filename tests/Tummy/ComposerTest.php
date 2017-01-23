@@ -125,6 +125,65 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('NEW abcd----', $lines[0]);
     }
 
+    public function testComposePaddingCharMultibyte()
+    {
+        $formats = (new Config\Factory())->create([
+            [
+                'elements' => [
+                    [
+                        'length' => 4,
+                        'reference' => 'type',
+                    ],
+                    [
+                        'length' => 8,
+                        'reference' => 'username',
+                        'paddingChar' => '-',
+                    ],
+                ],
+            ],
+        ]);
+
+        $record = new \stdClass();
+        $record->type = 'NEW ';
+        $record->username = 'abcdåéî';
+
+        $composer = new Composer($formats[0]);
+        $lines = $composer->compose([$record]);
+
+        $this->assertCount(1, $lines);
+        $this->assertInternalType('string', $lines[0]);
+        $this->assertEquals('NEW abcdåéî-', $lines[0]);
+    }
+
+    public function testComposeTrim()
+    {
+        $formats = (new Config\Factory())->create([
+            [
+                'elements' => [
+                    [
+                        'length' => 4,
+                        'reference' => 'type',
+                    ],
+                    [
+                        'length' => 8,
+                        'reference' => 'username',
+                    ],
+                ],
+            ],
+        ]);
+
+        $record = new \stdClass();
+        $record->type = 'NEW ';
+        $record->username = 'marco_waiting_for_the_sun';
+
+        $composer = new Composer($formats[0]);
+        $lines = $composer->compose([$record]);
+
+        $this->assertCount(1, $lines);
+        $this->assertInternalType('string', $lines[0]);
+        $this->assertEquals('NEW marco_wa', $lines[0]);
+    }
+
     public function testComposePaddingDirection()
     {
         $formats = (new Config\Factory())->create([
