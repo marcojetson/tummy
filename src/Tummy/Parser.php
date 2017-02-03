@@ -80,6 +80,7 @@ class Parser
      * @param Config\Element $element
      * @param int &$position
      * @return mixed
+     * @throws Exception\RequiredException
      */
     protected function extractValue($line, Config\Element $element, &$position = 0)
     {
@@ -87,6 +88,10 @@ class Parser
         
         $value = mb_substr($line, $position, $length);
         $value = $this->trim($value, $element);
+
+        if ($element->isRequired() && $value === '') {
+            throw new Exception\RequiredException(sprintf('Required element "%s" is empty', $element->getReference()));
+        }
 
         $position += $length;
 

@@ -14,6 +14,7 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
                     [
                         'length' => 8,
                         'reference' => 'name',
+                        'required' => true,
                     ],
                     [
                         'length' => 2,
@@ -220,6 +221,64 @@ class ComposerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $lines);
         $this->assertInternalType('string', $lines[0]);
         $this->assertEquals('NEW ----abcdX31X', $lines[0]);
+    }
+
+    /**
+     * @expectedException \Tummy\Exception\RequiredException
+     */
+    public function testComposeRequiredNullError()
+    {
+        $formats = (new Config\Factory())->create([
+            [
+                'elements' => [
+                    [
+                        'length' => 8,
+                        'reference' => 'name',
+                        'required' => true,
+                    ],
+                    [
+                        'length' => 2,
+                        'reference' => 'age',
+                    ],
+                ],
+            ],
+        ]);
+
+        $record = new \stdClass();
+        $record->name = null;
+        $record->age = 31;
+
+        $composer = new Composer($formats[0]);
+        $lines = $composer->compose([$record]);
+    }
+
+    /**
+     * @expectedException \Tummy\Exception\RequiredException
+     */
+    public function testComposeRequiredEmptyError()
+    {
+        $formats = (new Config\Factory())->create([
+            [
+                'elements' => [
+                    [
+                        'length' => 8,
+                        'reference' => 'name',
+                        'required' => true,
+                    ],
+                    [
+                        'length' => 2,
+                        'reference' => 'age',
+                    ],
+                ],
+            ],
+        ]);
+
+        $record = new \stdClass();
+        $record->name = '';
+        $record->age = 31;
+
+        $composer = new Composer($formats[0]);
+        $lines = $composer->compose([$record]);
     }
 
     public function testComposeConverter()

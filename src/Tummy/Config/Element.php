@@ -18,6 +18,9 @@ class Element
     /** @var int */
     private $paddingDirection;
 
+    /** @var bool */
+    private $required;
+
     /** @var Converter */
     private $converter;
 
@@ -83,6 +86,22 @@ class Element
     public function setPaddingDirection($paddingDirection)
     {
         $this->paddingDirection = $paddingDirection;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRequired()
+    {
+        return $this->required;
+    }
+
+    /**
+     * @param bool $required
+     */
+    public function setRequired($required)
+    {
+        $this->required = $required;
     }
 
     /**

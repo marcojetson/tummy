@@ -32,6 +32,7 @@ class Factory
                 $element->setLength($options['length']);
                 $element->setPaddingChar(isset($options['paddingChar']) ? $options['paddingChar'] : ' ');
                 $element->setPaddingDirection(isset($options['paddingDirection']) ? $options['paddingDirection'] : \STR_PAD_RIGHT);
+                $element->setRequired(!empty($options['required']));
 
                 if (isset($options['reference'])) {
                     $element->setReference($options['reference']);

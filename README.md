@@ -18,6 +18,7 @@ $formats = (new Tummy\Config\Factory())->create([
             [
                 'length' => 3,
                 'reference' => 'type',
+                'required' => true,
             ],
             [
                 'length' => 1, // elements w/o reference will be ignored

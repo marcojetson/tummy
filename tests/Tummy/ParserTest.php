@@ -14,6 +14,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                     [
                         'length' => 8,
                         'reference' => 'name',
+                        'required' => true,
                     ],
                     [
                         'length' => 2,
@@ -222,6 +223,31 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\stdClass::class, $records[1]);
         $this->assertEquals('ABCD----', $records[1]->username);
         $this->assertEquals('31', $records[1]->age);
+    }
+
+    /**
+     * @expectedException \Tummy\Exception\RequiredException
+     */
+    public function testParseRequiredError()
+    {
+        $formats = (new Config\Factory())->create([
+            [
+                'elements' => [
+                    [
+                        'length' => 8,
+                        'reference' => 'name',
+                        'required' => true,
+                    ],
+                    [
+                        'length' => 2,
+                        'reference' => 'age',
+                    ],
+                ],
+            ],
+        ]);
+
+        $parser = new Parser($formats);
+        $records = $parser->parse(['        31']);
     }
 
     public function testParseConverter()

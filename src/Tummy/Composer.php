@@ -27,6 +27,7 @@ class Composer
     /**
      * @param object $record
      * @return string
+     * @throws Exception\RequiredException
      */
     public function composeLine($record)
     {
@@ -40,6 +41,12 @@ class Composer
             $converter = $element->getConverter();
             if ($converter !== null) {
                 $value = $converter->serialize($value);
+            }
+
+            $value = (string)$value;
+
+            if ($element->isRequired() && $value === '') {
+                throw new Exception\RequiredException(sprintf('Required element "%s" is empty', $reference));
             }
 
             $line .= $this->pad($value, $element);
